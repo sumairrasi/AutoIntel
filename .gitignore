@@ -1,0 +1,62 @@
+# ----------------------
+# Environment & secrets
+# ----------------------
+.env
+env/
+venv/
+
+# ----------------------
+# Jupyter notebooks
+# ----------------------
+Notebook/
+
+# ----------------------
+# LangChain/Qdrant storage
+# ----------------------
+**/langchain_qdrant/
+
+# ----------------------
+# Temporary uploads & data
+# ----------------------
+data/
+temp_uploads/
+qodo/
+backup/
+app/credentials/token.json
+app/credentials/client_secret.json
+app/cred_new/client_secret_720869170034-0uvh2ihhscvmlb3cogc75tcq2ld3lfu4.apps.googleusercontent.com.json
+app/cred_new/token2.json
+app/cred_new/token.json
+tokens/token.json
+thumbnails/
+
+certificates/sbl-jarvis.com_cert/sbl-jarvis.com.ca-bundle
+certificates/sbl-jarvis.com_cert/sbl-jarvis.com.crt
+certificates/sbl-jarvis.com_cert/sbl-jarvis.com.p7b
+certificates/sbl-jarvis.com_key/sbl-jarvis.com_key.txt
+certificates/sbl-jarvis.com_cert/_.sbl-jarvis.com-chain-only.pem
+certificates/sbl-jarvis.com_cert/_.sbl-jarvis.com-chain.pem
+certificates/sbl-jarvis.com_cert/_.sbl-jarvis.com-crt.pem
+certificates/sbl-jarvis.com_key/_.sbl-jarvis.com-key.pem
+
+# ----------------------
+# Migrations / Alembic
+# ----------------------
+alembic/    
+# (keep alembic.ini tracked)
+alembic.ini
+# ----------------------
+# Python artifacts
+# ----------------------
+__pycache__/
+*.py[cod]
+certificates/
+# ----------------------
+# Editor / OS files
+# ----------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+

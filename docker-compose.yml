@@ -1,0 +1,88 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: banditosinc-db-develop
+    environment:
+      POSTGRES_DB: banditosinc_dev
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d banditosinc_dev"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: banditosinc-redis-develop
+    ports:
+      - "6377:6379"   # host:container (so you use localhost:6377 from host)
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisdata:/data
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: banditosinc-qdrant-develop
+    ports:
+      - "8086:6333"   # host:container (so you use localhost:8086 from host)
+    volumes:
+      - "C:/Users/asr/Banditosic_qdrant_storage_develop:/qdrant/storage"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:6333/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: banditosinc-app-develop
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://app:secret@db:5432/banditosinc_dev
+      - REDIS_URL=redis://redis:6379/0
+      - QDRANT_URL=http://qdrant:6333   # internal service connection
+
+      - OAUTHLIB_INSECURE_TRANSPORT=1
+      - GOOGLE_SCOPES=https://www.googleapis.com/auth/drive.file
+      - GOOGLE_REDIRECT_URI=https://localhost:5075/file/oauth2callback
+      - GOOGLE_CLIENT_SECRET_FILE=/app/credentials/client_secret.json
+      - GOOGLE_TOKEN_FILE=/run/tokens/token.json
+
+    ports:
+      - "5075:5075"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      qdrant:
+        condition: service_started
+    volumes:
+      - ./app/credentials:/app/credentials:ro
+      - ./tokens:/run/tokens
+      - ./certificates:/app/certificates
+    command: >
+      uvicorn app.main:app
+      --host 0.0.0.0 --port 5075
+      --ssl-keyfile /app/certificates/sbl-jarvis.com_key/_.sbl-jarvis.com-key.pem
+      --ssl-certfile /app/certificates/sbl-jarvis.com_cert/_.sbl-jarvis.com-crt.pem
+      --ssl-ca-certs /app/certificates/sbl-jarvis.com_cert/_.sbl-jarvis.com-chain.pem
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:
+  qdrant_storage:

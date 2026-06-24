@@ -1,0 +1,4 @@
+2025-09-29 11:30:23,177 - llm_config - INFO - Endpoint: /create | Request received  config={'temperature': 0.0, 'frequency_penalty': 0.0, 'presence_penalty': 0.0}
+2025-09-29 11:30:23,187 - llm_config - INFO - Endpoint: /create | New LLM config created  id=1
+2025-09-30 13:28:08,847 - llm_config - INFO - Endpoint: /create | Request received  config={'temperature': 0.0, 'frequency_penalty': 0.0, 'presence_penalty': 0.0}
+2025-09-30 13:28:08,859 - llm_config - INFO - Endpoint: /create | New LLM config created  id=1

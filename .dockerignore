@@ -1,0 +1,47 @@
+# VCS / IDE
+.git
+.gitignore
+.vscode
+.idea
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.mypy_cache/
+.pytest_cache/
+.coverage
+dist/
+build/
+.eggs/
+
+# Envs
+.env
+.env.*
+venv/
+.venv/
+env/
+certificates/
+# Data and artifacts (these are why your context is GBs)
+data/
+Notebook/
+temp_uploads/
+langchain_qdrant/
+qdrant_storage/
+pgdata/
+redisdata/
+**/*.sqlite
+**/*.db
+**/*.ipynb
+**/*.pdf
+**/*.docx
+**/*.pptx
+
+# Credentials – mount at runtime, don’t copy
+app/credentials/*
+tokens/*
+
+# Node / web (if any)
+node_modules/
